@@ -1,0 +1,36 @@
+{
+    "$schema": "https://biomejs.dev/schemas/1.9.2/schema.json",
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2
+    },
+    "linter": {
+      "enabled": true,
+      "rules": {
+        "recommended": true
+      }
+    },
+    "organizeImports": {
+      "enabled": true
+    },
+    "files": {
+      "ignore": [
+        "node_modules/**",
+        "dist/**",
+        ".next/**",
+        "build/**"
+      ]
+    },
+    "projects": [
+      {
+        "name": "frontend",
+        "root": "apps/frontend"
+      },
+      {
+        "name": "backend",
+        "root": "apps/backend"
+      }
+    ]
+  }
+  

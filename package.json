@@ -1,0 +1,16 @@
+{
+  "name": "draw",
+  "module": "index.ts",
+  "type": "module",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
