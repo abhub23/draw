@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, RefObject, type MouseEvent } from 'react';
+import { useRef, useEffect, RefObject, type MouseEvent, TouchEvent } from 'react';
 import { useDrawing } from '@/store/useDrawing';
 import { useColor } from '@/store/useColor';
 import { useStrokeWidth } from '@/store/useStrokeWidth';
@@ -44,8 +44,17 @@ function Home() {
     contextRef.current = context;
   }, []);
 
-  const startDrawing = (e: MouseEvent) => {
-    const { offsetX, offsetY } = e.nativeEvent;
+  const startDrawing = (e: MouseEvent | TouchEvent) => {
+    let offsetX: number, offsetY: number;
+    
+    if (e.nativeEvent instanceof MouseEvent) {
+      ({ offsetX, offsetY } = e.nativeEvent);
+    } else {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      offsetX = e.nativeEvent.touches[0].clientX - (rect?.left || 0);
+      offsetY = e.nativeEvent.touches[0].clientY - (rect?.top || 0);
+    }
+    
     contextRef.current?.beginPath();
     contextRef.current?.moveTo(offsetX, offsetY);
     setIsDrawing(true);
@@ -56,11 +65,21 @@ function Home() {
     setIsDrawing(false);
   };
 
-  const draw = (e: MouseEvent) => {
+  const draw = (e: MouseEvent | TouchEvent) => {
     if (!isDrawing) {
       return;
     }
-    const { offsetX, offsetY } = e.nativeEvent;
+    
+    let offsetX: number, offsetY: number;
+    
+    if (e.nativeEvent instanceof MouseEvent) {
+      ({ offsetX, offsetY } = e.nativeEvent);
+    } else {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      offsetX = e.nativeEvent.touches[0].clientX - (rect?.left || 0);
+      offsetY = e.nativeEvent.touches[0].clientY - (rect?.top || 0);
+    }
+    
     contextRef.current?.lineTo(offsetX, offsetY);
     contextRef.current?.stroke();
   };
@@ -73,6 +92,9 @@ function Home() {
         onMouseDown={startDrawing}
         onMouseUp={stopDrawing}
         onMouseMove={draw}
+        onTouchStart={startDrawing}
+        onTouchEnd={stopDrawing}
+        onTouchMove={draw}
         className='absolute min-h-full min-w-full bg-white'
       ></canvas>
     </div>
