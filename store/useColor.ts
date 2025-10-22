@@ -6,6 +6,6 @@ type Colortype = {
 };
 
 export const useColor = create<Colortype>((set) => ({
-  color: 'black',
+  color: '#000000',
   setColor: (value: string) => set({ color: value }),
 }));
