@@ -3,19 +3,28 @@
 import { useRef, useEffect, RefObject, type MouseEvent } from 'react';
 import { useDrawing } from '@/store/useDrawing';
 import { useColor } from '@/store/useColor';
+import { useStrokeWidth } from '@/store/useStrokeWidth';
+import ColorSelector from '@/components/ColorSelector';
 
 function Home() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef: RefObject<CanvasRenderingContext2D | null> = useRef(null);
 
   const { isDrawing, setIsDrawing } = useDrawing();
-  const { color, setColor } = useColor();
+  const { color } = useColor();
+  const { strokeWidth, setStrokeWidth } = useStrokeWidth();
 
   useEffect(() => {
     if (contextRef.current) {
       contextRef.current.strokeStyle = color;
     }
   }, [color]);
+
+  useEffect(() => {
+    if (contextRef.current) {
+      contextRef.current.lineWidth = strokeWidth;
+    }
+  }, [strokeWidth]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -31,7 +40,7 @@ function Home() {
 
     context?.scale(2, 2);
     context.lineCap = 'round';
-    context.lineWidth = 5;
+    context.lineWidth = strokeWidth;
     contextRef.current = context;
   }, []);
 
@@ -57,14 +66,14 @@ function Home() {
   };
 
   return (
-    <div className='relative min-h-full min-w-full'>
-      <button className='h-12 w-20 bg-red-400' onClick={() => setColor('red')}></button>
+    <div className='relative h-full w-full'>
+      <ColorSelector/>
       <canvas
         ref={canvasRef}
         onMouseDown={startDrawing}
         onMouseUp={stopDrawing}
         onMouseMove={draw}
-        className='absolute h-full w-full bg-white'
+        className='absolute min-h-full min-w-full bg-white'
       ></canvas>
     </div>
   );
