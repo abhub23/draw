@@ -1,12 +1,12 @@
 import Github from '@uiw/react-color-github';
-import { useColor } from '@/store/useColor';
+import { useDrawing } from '@/store/useDrawing';
 
 export default function ColorSelector() {
-  const {color, setColor} = useColor();
+  const { color, setColor } = useDrawing();
   return (
     <div className='absolute z-10'>
       <Github
-      className='lg:min-w-[240px] gap-1'
+        className='gap-1 lg:min-w-[240px]'
         color={color}
         showTriangle={true}
         onChange={(color) => {

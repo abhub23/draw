@@ -2,17 +2,13 @@
 
 import { useRef, useEffect, RefObject, type MouseEvent, TouchEvent } from 'react';
 import { useDrawing } from '@/store/useDrawing';
-import { useColor } from '@/store/useColor';
-import { useStrokeWidth } from '@/store/useStrokeWidth';
 import ColorSelector from '@/components/ColorSelector';
 
 function Home() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef: RefObject<CanvasRenderingContext2D | null> = useRef(null);
 
-  const { isDrawing, setIsDrawing } = useDrawing();
-  const { color } = useColor();
-  const { strokeWidth, setStrokeWidth } = useStrokeWidth();
+  const { isDrawing, setIsDrawing, color, strokeWidth, setStrokeWidth } = useDrawing();
 
   useEffect(() => {
     if (contextRef.current) {
@@ -46,7 +42,7 @@ function Home() {
 
   const startDrawing = (e: MouseEvent | TouchEvent) => {
     let offsetX: number, offsetY: number;
-    
+
     if (e.nativeEvent instanceof MouseEvent) {
       ({ offsetX, offsetY } = e.nativeEvent);
     } else {
@@ -54,7 +50,7 @@ function Home() {
       offsetX = e.nativeEvent.touches[0].clientX - (rect?.left || 0);
       offsetY = e.nativeEvent.touches[0].clientY - (rect?.top || 0);
     }
-    
+
     contextRef.current?.beginPath();
     contextRef.current?.moveTo(offsetX, offsetY);
     setIsDrawing(true);
@@ -69,9 +65,9 @@ function Home() {
     if (!isDrawing) {
       return;
     }
-    
+
     let offsetX: number, offsetY: number;
-    
+
     if (e.nativeEvent instanceof MouseEvent) {
       ({ offsetX, offsetY } = e.nativeEvent);
     } else {
@@ -79,14 +75,14 @@ function Home() {
       offsetX = e.nativeEvent.touches[0].clientX - (rect?.left || 0);
       offsetY = e.nativeEvent.touches[0].clientY - (rect?.top || 0);
     }
-    
+
     contextRef.current?.lineTo(offsetX, offsetY);
     contextRef.current?.stroke();
   };
 
   return (
     <div className='relative h-full w-full'>
-      <ColorSelector/>
+      <ColorSelector />
       <canvas
         ref={canvasRef}
         onMouseDown={startDrawing}
