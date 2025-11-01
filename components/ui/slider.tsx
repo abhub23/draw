@@ -45,9 +45,9 @@ function Slider({
         <SliderPrimitive.Range
           data-slot='slider-range'
           className={cn(
-            'absolute data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full'
+            `absolute data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full`
           )}
-          style={color ? { backgroundColor: color } : undefined}
+          style={{ backgroundColor: color }}
         />
       </SliderPrimitive.Track>
       {Array.from({ length: _values.length }, (_, index) => (
