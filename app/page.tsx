@@ -3,12 +3,13 @@
 import { useRef, useEffect, RefObject, type MouseEvent, TouchEvent } from 'react';
 import { useDrawing } from '@/store/useDrawing';
 import ColorSelector from '@/components/ColorSelector';
+import StrokeWidthSelector from '@/components/StrokeWidthSelector';
 
 function Home() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef: RefObject<CanvasRenderingContext2D | null> = useRef(null);
 
-  const { isDrawing, setIsDrawing, color, strokeWidth, setStrokeWidth } = useDrawing();
+  const { isDrawing, setIsDrawing, color, strokeWidth } = useDrawing();
 
   useEffect(() => {
     if (contextRef.current) {
@@ -20,7 +21,7 @@ function Home() {
     if (contextRef.current) {
       contextRef.current.lineWidth = strokeWidth;
     }
-  }, [strokeWidth]);
+  }, [strokeWidth, color]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -81,8 +82,11 @@ function Home() {
   };
 
   return (
-    <div className='relative h-full w-full flex justify-center'>
-      <ColorSelector />
+    <div className='relative h-full w-full'>
+      <div className='absolute top-0 left-1/2 z-10 flex -translate-x-1/2 transform items-center gap-4 py-4'>
+        <StrokeWidthSelector />
+        <ColorSelector />
+      </div>
       <canvas
         ref={canvasRef}
         onMouseDown={startDrawing}
