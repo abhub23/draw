@@ -4,12 +4,13 @@ import { useRef, useEffect, RefObject, type MouseEvent, TouchEvent } from 'react
 import { useDrawing } from '@/store/useDrawing';
 import ColorSelector from '@/components/ColorSelector';
 import StrokeWidthSelector from '@/components/StrokeWidthSelector';
+import ClearButton from '@/components/ClearButton';
 
 function Home() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef: RefObject<CanvasRenderingContext2D | null> = useRef(null);
 
-  const { isDrawing, setIsDrawing, color, strokeWidth } = useDrawing();
+  const { isDrawing, setIsDrawing, color, strokeWidth, clearTimestamp } = useDrawing();
 
   useEffect(() => {
     if (contextRef.current) {
@@ -21,7 +22,7 @@ function Home() {
     if (contextRef.current) {
       contextRef.current.lineWidth = strokeWidth;
     }
-  }, [strokeWidth, color]);
+  }, [strokeWidth]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -37,9 +38,15 @@ function Home() {
 
     context?.scale(2, 2);
     context.lineCap = 'round';
-    context.lineWidth = strokeWidth;
+    context.lineWidth = 3;
     contextRef.current = context;
   }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || !contextRef.current || clearTimestamp === 0) return;
+    contextRef.current.clearRect(0, 0, canvas.width, canvas.height);
+  }, [clearTimestamp]);
 
   const startDrawing = (e: MouseEvent | TouchEvent) => {
     let offsetX: number, offsetY: number;
@@ -85,6 +92,7 @@ function Home() {
     <div className='relative h-full w-full'>
       <div className='absolute top-0 left-1/2 z-10 flex -translate-x-1/2 transform items-center gap-4 py-4'>
         <StrokeWidthSelector />
+        <ClearButton />
         <ColorSelector />
       </div>
       <canvas
