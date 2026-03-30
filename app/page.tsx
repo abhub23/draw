@@ -8,7 +8,8 @@ import ClearButton from '@/components/ClearButton';
 
 function Home() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const contextRef: RefObject<CanvasRenderingContext2D | null> = useRef(null);
+  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
+  const lastPointRef = useRef<{ x: number; y: number } | null>(null);
 
   const { isDrawing, setIsDrawing, color, strokeWidth, clearTimestamp } = useDrawing();
 
@@ -38,6 +39,7 @@ function Home() {
 
     context?.scale(2, 2);
     context.lineCap = 'round';
+    context.lineJoin = 'round';
     context.lineWidth = 3;
     contextRef.current = context;
   }, []);
@@ -61,11 +63,13 @@ function Home() {
 
     contextRef.current?.beginPath();
     contextRef.current?.moveTo(offsetX, offsetY);
+    lastPointRef.current = { x: offsetX, y: offsetY };
     setIsDrawing(true);
   };
 
   const stopDrawing = () => {
     contextRef.current?.closePath();
+    lastPointRef.current = null;
     setIsDrawing(false);
   };
 
@@ -84,8 +88,20 @@ function Home() {
       offsetY = e.nativeEvent.touches[0].clientY - (rect?.top || 0);
     }
 
-    contextRef.current?.lineTo(offsetX, offsetY);
-    contextRef.current?.stroke();
+    if (lastPointRef.current && contextRef.current) {
+      const lastPoint = lastPointRef.current;
+      const midPoint = {
+        x: lastPoint.x + (offsetX - lastPoint.x) / 2,
+        y: lastPoint.y + (offsetY - lastPoint.y) / 2,
+      };
+
+      contextRef.current.quadraticCurveTo(lastPoint.x, lastPoint.y, midPoint.x, midPoint.y);
+      contextRef.current.stroke();
+      contextRef.current.beginPath();
+      contextRef.current.moveTo(midPoint.x, midPoint.y);
+
+      lastPointRef.current = { x: offsetX, y: offsetY };
+    }
   };
 
   return (
@@ -103,7 +119,8 @@ function Home() {
         onTouchStart={startDrawing}
         onTouchEnd={stopDrawing}
         onTouchMove={draw}
-        className='absolute min-h-full min-w-full bg-white'
+        className='absolute min-h-full min-w-full bg-white bg-grid-slate-200/[0.2]'
+        style={{ cursor: 'crosshair', backgroundImage: 'radial-gradient(circle at 1px 1px, #e2e8f0 1px, transparent 0)' }}
       ></canvas>
     </div>
   );
