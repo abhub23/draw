@@ -108,8 +108,10 @@ function Home() {
     <div className='relative h-full w-full'>
       <div className='absolute top-0 left-1/2 z-10 flex -translate-x-1/2 transform items-center gap-4 py-4'>
         <StrokeWidthSelector />
-        <ClearButton />
         <ColorSelector />
+      </div>
+      <div className='absolute top-1 right-0 z-10 p-4'>
+        <ClearButton />
       </div>
       <canvas
         ref={canvasRef}
