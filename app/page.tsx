@@ -121,8 +121,11 @@ function Home() {
         onTouchStart={startDrawing}
         onTouchEnd={stopDrawing}
         onTouchMove={draw}
-        className='absolute min-h-full min-w-full bg-white bg-grid-slate-200/[0.2]'
-        style={{ cursor: 'crosshair', backgroundImage: 'radial-gradient(circle at 1px 1px, #e2e8f0 1px, transparent 0)' }}
+        className='bg-grid-slate-200/[0.2] absolute min-h-full min-w-full bg-white'
+        style={{
+          cursor: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Cpath d='M12 2v20M2 12h20' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") 12 12, crosshair`,
+          backgroundImage: 'radial-gradient(circle at 1px 1px, #e2e8f0 1px, transparent 0)',
+        }}
       ></canvas>
     </div>
   );
