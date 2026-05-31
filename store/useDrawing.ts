@@ -23,5 +23,6 @@ export const useDrawing = create<DrawType>((set) => ({
   setIsDrawing: (value: boolean) => set({ isDrawing: value }),
   setStrokeWidth: (value: number) => set({ strokeWidth: value }),
   setColor: (value: string) => set({ color: value }),
-  clearCanvas: () => set((state) => ({ isDrawing: false, clearTimestamp: state.clearTimestamp + 1 })),
+  clearCanvas: () =>
+    set((state) => ({ isDrawing: false, clearTimestamp: state.clearTimestamp + 1 })),
 }));

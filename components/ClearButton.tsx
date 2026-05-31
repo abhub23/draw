@@ -5,7 +5,12 @@ export default function ClearButton() {
   const { clearCanvas } = useDrawing();
 
   return (
-    <Button onClick={clearCanvas} variant='destructive' size='sm' className='cursor-pointer text-base'>
+    <Button
+      onClick={clearCanvas}
+      variant='destructive'
+      size='sm'
+      className='cursor-pointer text-base'
+    >
       Reset
     </Button>
   );
