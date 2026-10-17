@@ -55,12 +55,3 @@ Three details that are easy to get wrong:
 - Excalidraw saves to `localStorage` under `excalidraw-state`, so reloads keep your work. Use the
   **Share** button to turn a drawing into a link.
 - The canvas is pinned to the viewport and the page does not scroll.
-
-## History
-
-An earlier iteration of this project was a custom canvas drawing app with its own tools, undo/redo,
-autosave and PNG export. It is preserved on the `archive/canvas-app` branch:
-
-```bash
-git checkout archive/canvas-app
-```
