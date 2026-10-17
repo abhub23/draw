@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+// Imported after globals.css so Excalidraw's own rules win over Tailwind's
+// preflight reset inside the canvas.
+import '@excalidraw/excalidraw/index.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
